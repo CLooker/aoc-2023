@@ -28,8 +28,8 @@ public abstract class OneSolution extends Solution<Integer> {
   private final CalibrationEncoding calibrationEncoding;
 
   @Override
-  protected Integer run(List<String> input) {
-    return input
+  protected Integer run(List<String> inputLines) {
+    return inputLines
         .stream()
         .map(this::parseCalibration)
         .mapToInt(Integer::intValue)

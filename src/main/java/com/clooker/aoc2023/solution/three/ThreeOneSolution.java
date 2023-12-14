@@ -6,9 +6,9 @@ import java.util.List;
 public class ThreeOneSolution extends Solution<Integer> {
 
   @Override
-  protected Integer run(List<String> input) {
+  protected Integer run(List<String> inputLines) {
     return InputParser
-        .partNumbers(input)
+        .partNumbers(inputLines)
         .stream()
         .map(PartNumber::value)
         .mapToInt(Integer::intValue)

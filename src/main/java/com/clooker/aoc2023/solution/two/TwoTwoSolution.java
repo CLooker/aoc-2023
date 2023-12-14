@@ -8,8 +8,8 @@ import java.util.Map;
 public class TwoTwoSolution extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> input) {
-    return input
+  protected Long run(List<String> inputLines) {
+    return inputLines
         .stream()
         .map(InputLine::parse)
         .map(this::extractCounts)

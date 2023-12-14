@@ -17,7 +17,7 @@ public abstract class Solution<T> {
     );
   }
 
-  protected abstract T run(List<String> input);
+  protected abstract T run(List<String> inputLines);
 
   @SneakyThrows
   private List<String> findInput(String inputLocation) {
