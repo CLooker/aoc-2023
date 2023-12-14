@@ -7,8 +7,8 @@ public class ThreeTwoSolution extends Solution<Integer> {
 
   @Override
   protected Integer run(List<String> inputLines) {
-    return InputParser
-        .gearRatios(inputLines)
+    return GearRatio
+        .parseAll(inputLines)
         .stream()
         .map(GearRatio::value)
         .mapToInt(Integer::intValue)

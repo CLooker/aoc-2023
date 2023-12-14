@@ -7,8 +7,8 @@ public class ThreeOneSolution extends Solution<Integer> {
 
   @Override
   protected Integer run(List<String> inputLines) {
-    return InputParser
-        .partNumbers(inputLines)
+    return PartNumber
+        .parseAll(inputLines)
         .stream()
         .map(PartNumber::value)
         .mapToInt(Integer::intValue)

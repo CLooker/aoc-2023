@@ -11,7 +11,7 @@ class ThreeTwoSolutionTest {
 
   @Test
   public void run() {
-//    assertEquals(467835, threeTwoSolution.run("3-example-input.txt"));
+    assertEquals(467835, threeTwoSolution.run("3-example-input.txt"));
     assertEquals(81166799, threeTwoSolution.run("3-input.txt"));
   }
 
