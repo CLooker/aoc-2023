@@ -7,7 +7,7 @@ import java.util.Objects;
 
 public class TwoOneSolution extends Solution<Long> {
 
-  private final Map<String, Integer> colorToCount = Map.of(
+  private static final Map<String, Integer> colorToCountMax = Map.of(
       "red", 12,
       "green", 13,
       "blue", 14
@@ -15,28 +15,28 @@ public class TwoOneSolution extends Solution<Long> {
 
   @Override
   protected Long run(List<String> inputLines) {
-    return inputLines
+    return Game
+        .parseAll(inputLines)
         .stream()
-        .map(InputLine::parse)
-        .filter(this::isPossibleGame)
-        .map(InputLine::id)
-        .reduce(0L, Long::sum);
+        .filter(TwoOneSolution::isGamePossible)
+        .map(Game::gameId)
+        .mapToLong(Long::longValue)
+        .sum();
   }
 
-  private boolean isPossibleGame(InputLine inputLine) {
-    return colorToCount
+  private static boolean isGamePossible(Game game) {
+    return colorToCountMax
             .entrySet()
             .stream()
             .allMatch(entry -> {
               String color = entry.getKey();
-              Integer count = entry.getValue();
-              return inputLine
+              Integer countMax = entry.getValue();
+              return game
                   .countToColorList()
                   .stream()
                   .map(c2c -> c2c.get(color))
                   .filter(Objects::nonNull)
-                  .allMatch(ct -> ct <= count);
+                  .allMatch(count -> count <= countMax);
             });
   }
-
 }

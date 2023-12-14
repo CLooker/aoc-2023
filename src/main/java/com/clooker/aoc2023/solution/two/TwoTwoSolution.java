@@ -9,17 +9,18 @@ public class TwoTwoSolution extends Solution<Long> {
 
   @Override
   protected Long run(List<String> inputLines) {
-    return inputLines
+    return Game
+        .parseAll(inputLines)
         .stream()
-        .map(InputLine::parse)
-        .map(this::extractCounts)
-        .map(this::computePower)
-        .reduce(0L, Long::sum);
+        .map(TwoTwoSolution::computeColorToCountMin)
+        .map(TwoTwoSolution::computePower)
+        .mapToLong(Long::longValue)
+        .sum();
   }
 
-  private List<Integer> extractCounts(InputLine inputLine) {
+  private static Map<String, Integer> computeColorToCountMin(Game game) {
     Map<String, Integer> colorToCount = new HashMap<>();
-    inputLine
+    game
         .countToColorList()
         .forEach(c2c -> {
           c2c.forEach((color, count) ->
@@ -30,11 +31,15 @@ public class TwoTwoSolution extends Solution<Long> {
                       : count
               ));
         });
-    return colorToCount.values().stream().toList();
+    return colorToCount;
   }
 
-  private long computePower(List<Integer> counts) {
-    return counts.stream().reduce(1, (c1, c2) -> c1 * c2);
+  private static Long computePower(Map<String, Integer> colorToCount) {
+    return colorToCount
+        .values()
+        .stream()
+        .mapToLong(Integer::longValue)
+        .reduce(1L, (c1, c2) -> c1 * c2);
   }
 
 }
