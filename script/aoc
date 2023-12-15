@@ -1,0 +1,95 @@
+#!/bin/bash
+
+set -Eeuo pipefail
+trap exit ERR
+
+usage() {
+  echo 'usage: commands are'
+  declare -F \
+    | awk '{ print $NF }' \
+    | grep -Ev '^_|main|parse_args|usage' \
+    | sort \
+    | sed 's/^/       /'
+}
+
+parse_args() {
+  if [[ ${1-} == -h || ${1-} == --help ]]; then
+    usage
+    exit
+  fi
+
+  if [[ -z ${1-} || -z "$(usage | tail -n +2 | grep "$1")" ]]; then
+    usage
+    exit 2
+  fi
+}
+
+scaffold() {
+  local day=${1?"day arg is required, e.g. twenty_two"}
+  local number=${2?"number arg is required, e.g. 22"}
+
+  local pascal_cased_day
+  pascal_cased_day=$(echo "$day" | sed -r 's/(^|_)([a-z])/\U\2/g')
+
+  local project_dir
+  project_dir=$(readlink -f "${BASH_SOURCE[0]}" | xargs dirname | xargs dirname)
+
+  local src_package_dir="$project_dir/src/main/java/com/clooker/aoc2023/solution/$day"
+  local test_package_dir="$project_dir/src/test/java/com/clooker/aoc2023/solution/$day"
+  mkdir -p "$src_package_dir" "$test_package_dir"
+
+  for n in "One" "Two"; do
+    local class_name=${pascal_cased_day}${n}Solution
+    local lower_cased_class_name=${class_name,}
+    local test_class_name=${class_name}Test
+
+    cat << EOF > "${src_package_dir}/${class_name}.java"
+package com.clooker.aoc2023.solution.$day;
+
+import com.clooker.aoc2023.solution.Solution;
+import java.util.List;
+
+public class ${class_name} extends Solution<Long> {
+
+  @Override
+  protected Long run(List<String> inputLines) {
+    return -1L;
+  }
+
+}
+
+EOF
+
+  cat << EOF > "${test_package_dir}/${test_class_name}.java"
+package com.clooker.aoc2023.solution.$day;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+public class ${test_class_name} {
+
+  private final ${class_name} ${lower_cased_class_name} = new ${class_name}();
+
+  @Test
+  public void run() {
+    assertEquals(null, ${lower_cased_class_name}.run("${number}-example-input.txt"));
+    assertEquals(null, ${lower_cased_class_name}.run("${number}-input.txt"));
+  }
+
+}
+EOF
+
+  done
+
+  local resources_path="${project_dir}/src/test/resources"
+  touch "${resources_path}/${number}-input.txt"
+  touch "${resources_path}/${number}-example-input.txt"
+}
+
+main() {
+  parse_args "$@"
+  "$@"
+}
+
+main "$@"
