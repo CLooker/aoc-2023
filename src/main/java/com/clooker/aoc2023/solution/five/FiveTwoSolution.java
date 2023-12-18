@@ -8,15 +8,15 @@ import java.util.List;
 public class FiveTwoSolution extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> inputLines) {
-    List<Range> seedRanges = parseSeedRanges(inputLines);
-    List<String> maps = parseMaps(inputLines);
+  protected Long run(Input input) {
+    List<Range> seedRanges = parseSeedRanges(input);
+    List<String> maps = parseMaps(input);
     List<Range> locationRanges = computeLocationRanges(seedRanges, maps);
     return computeMinLocation(locationRanges);
   }
 
-  private List<Range> parseSeedRanges(List<String> inputLines) {
-    String seedRangesLine = inputLines.getFirst().replace("seeds: ", "");
+  private List<Range> parseSeedRanges(Input input) {
+    String seedRangesLine = input.lines().getFirst().replace("seeds: ", "");
     String[] seedRangeStrs = seedRangesLine.split(" ");
     List<Range> ranges = new ArrayList<>();
     for (int i = 0; i < seedRangeStrs.length; i += 2) {
@@ -28,13 +28,14 @@ public class FiveTwoSolution extends Solution<Long> {
     return ranges;
   }
 
-  private List<String> parseMaps(List<String> inputLines) {
-    String input = String.join(
+  private List<String> parseMaps(Input input) {
+    List<String> inputLines = input.lines();
+    String mapsInput = String.join(
         "\n",
         inputLines.subList(2, inputLines.size())
     );
     return Arrays
-        .stream(input.split("\\n\\n"))
+        .stream(mapsInput.split("\\n\\n"))
         .toList();
   }
 

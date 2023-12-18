@@ -1,18 +1,16 @@
 package com.clooker.aoc2023.solution.three;
 
-import com.clooker.aoc2023.solution.Solution;
 import java.util.List;
 
-public class ThreeTwoSolution extends Solution<Integer> {
+public class ThreeTwoSolution extends ThreeSolution {
 
   @Override
-  protected Integer run(List<String> inputLines) {
-    return GearRatio
-        .parseAll(inputLines)
+  protected List<Integer> summarizeInput(Input input) {
+    return InputParser
+        .parseGearRatios(input)
         .stream()
         .map(GearRatio::value)
-        .mapToInt(Integer::intValue)
-        .sum();
+        .toList();
   }
 
 }

@@ -1,17 +1,20 @@
 package com.clooker.aoc2023.solution.one;
 
-import static com.clooker.aoc2023.solution.one.CalibrationEncoding.DIGITS_AND_LETTERS;
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 import com.clooker.aoc2023.solution.Solution;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public abstract class OneSolution extends Solution<Integer> {
+
+  enum CalibrationEncoding {
+    DIGITS,
+    DIGITS_AND_LETTERS
+  }
 
   private static final Map<String, String> DIGIT_NAME_TO_REPLACEMENT = Map.of(
       "one", "o1e",
@@ -28,8 +31,9 @@ public abstract class OneSolution extends Solution<Integer> {
   private final CalibrationEncoding calibrationEncoding;
 
   @Override
-  protected Integer run(List<String> inputLines) {
-    return inputLines
+  protected Integer run(Input input) {
+    return input
+        .lines()
         .stream()
         .map(this::parseCalibration)
         .mapToInt(Integer::intValue)
@@ -37,7 +41,7 @@ public abstract class OneSolution extends Solution<Integer> {
   }
 
   private int parseCalibration(String inputLine) {
-    if (calibrationEncoding.equals(DIGITS_AND_LETTERS)) {
+    if (calibrationEncoding.equals(CalibrationEncoding.DIGITS_AND_LETTERS)) {
       for (Entry<String, String> entry : DIGIT_NAME_TO_REPLACEMENT.entrySet()) {
         String digitName = entry.getKey();
         String replacement = entry.getValue();

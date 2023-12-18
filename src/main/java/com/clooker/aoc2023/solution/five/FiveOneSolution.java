@@ -8,20 +8,21 @@ import java.util.List;
 public class FiveOneSolution extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> inputLines) {
-    List<Long> seeds = parseSeeds(inputLines);
-    List<String> maps = parseMaps(inputLines);
+  protected Long run(Input input) {
+    List<Long> seeds = parseSeeds(input);
+    List<String> maps = parseMaps(input);
     return computeLocations(seeds, maps)
         .stream()
         .min(Long::compare)
         .orElseThrow();
   }
 
-  private List<Long> parseSeeds(List<String> inputLines) {
+  private List<Long> parseSeeds(Input input) {
     return new ArrayList<>(
         Arrays
             .stream(
-                inputLines
+                input
+                    .lines()
                     .getFirst()
                     .replace("seeds: ", "")
                     .split(" ")
@@ -31,13 +32,14 @@ public class FiveOneSolution extends Solution<Long> {
     );
   }
 
-  private List<String> parseMaps(List<String> inputLines) {
-    String input = String.join(
+  private List<String> parseMaps(Input input) {
+    List<String> inputLines = input.lines();
+    String mapsInput = String.join(
         "\n",
         inputLines.subList(2, inputLines.size())
     );
     return Arrays
-        .stream(input.split("\\n\\n"))
+        .stream(mapsInput.split("\\n\\n"))
         .toList();
   }
 

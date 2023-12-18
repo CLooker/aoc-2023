@@ -1,27 +1,24 @@
 package com.clooker.aoc2023.solution.two;
 
-import com.clooker.aoc2023.solution.Solution;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TwoTwoSolution extends Solution<Long> {
+public class TwoTwoSolution extends TwoOneSolution {
 
   @Override
-  protected Long run(List<String> inputLines) {
-    return Game
-        .parseAll(inputLines)
+  protected List<Long> summarizeGames(List<Game> games) {
+    return games
         .stream()
-        .map(TwoTwoSolution::computeColorToCountMin)
-        .map(TwoTwoSolution::computePower)
-        .mapToLong(Long::longValue)
-        .sum();
+        .map(this::computeColorToMaxCount)
+        .map(this::computePower)
+        .toList();
   }
 
-  private static Map<String, Integer> computeColorToCountMin(Game game) {
+  private Map<String, Integer> computeColorToMaxCount(Game game) {
     Map<String, Integer> colorToCount = new HashMap<>();
     game
-        .countToColorList()
+        .colorToCountList()
         .forEach(c2c -> {
           c2c.forEach((color, count) ->
               colorToCount.put(
@@ -34,7 +31,7 @@ public class TwoTwoSolution extends Solution<Long> {
     return colorToCount;
   }
 
-  private static Long computePower(Map<String, Integer> colorToCount) {
+  private Long computePower(Map<String, Integer> colorToCount) {
     return colorToCount
         .values()
         .stream()

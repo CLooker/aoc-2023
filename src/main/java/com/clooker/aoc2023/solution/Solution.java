@@ -12,33 +12,37 @@ import lombok.SneakyThrows;
 public abstract class Solution<T> {
 
   public final T run(String inputLocation) {
-    return run(
-        findInput(inputLocation)
-    );
+    return run(Input.load(inputLocation));
   }
 
-  protected abstract T run(List<String> inputLines);
+  protected abstract T run(Input input);
 
-  @SneakyThrows
-  private List<String> findInput(String inputLocation) {
-    Path inputPath = Stream
-        .of(
-            inputLocation,
-            Optional
-                .ofNullable(getClass().getClassLoader().getResource(inputLocation))
-                .map(URL::getFile)
-                .orElse(null)
-        )
-        .filter(Objects::nonNull)
-        .map(Path::of)
-        .filter(Files::exists)
-        .findAny()
-        .orElseThrow(() ->
-            new IllegalArgumentException(
-                STR."failed finding file at input location \{inputLocation}"
-            )
-        );
+  public record Input(String raw, List<String> lines) {
+    @SneakyThrows
+    public static Input load(String inputLocation) {
+      Path inputPath = Stream
+          .of(
+              inputLocation,
+              Optional
+                  .ofNullable(Input.class.getClassLoader().getResource(inputLocation))
+                  .map(URL::getFile)
+                  .orElse(null)
+          )
+          .filter(Objects::nonNull)
+          .map(Path::of)
+          .filter(Files::exists)
+          .findAny()
+          .orElseThrow(() ->
+              new IllegalArgumentException(
+                  STR."failed finding file at input location \{inputLocation}"
+              )
+          );
 
-    return Files.readAllLines(inputPath);
+      String raw = Files.readString(inputPath);
+      List<String> lines = Files.readAllLines(inputPath);
+
+      return new Input(raw, lines);
+    }
   }
+
 }

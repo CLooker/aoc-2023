@@ -1,18 +1,16 @@
 package com.clooker.aoc2023.solution.three;
 
-import com.clooker.aoc2023.solution.Solution;
 import java.util.List;
 
-public class ThreeOneSolution extends Solution<Integer> {
+public class ThreeOneSolution extends ThreeSolution {
 
   @Override
-  protected Integer run(List<String> inputLines) {
-    return PartNumber
-        .parseAll(inputLines)
+  protected List<Integer> summarizeInput(Input input) {
+    return InputParser
+        .parsePartNumbers(input)
         .stream()
         .map(PartNumber::value)
-        .mapToInt(Integer::intValue)
-        .sum();
+        .toList();
   }
 
 }

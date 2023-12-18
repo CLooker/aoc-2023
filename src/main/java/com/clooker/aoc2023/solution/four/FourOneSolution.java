@@ -1,14 +1,13 @@
 package com.clooker.aoc2023.solution.four;
 
 import com.clooker.aoc2023.solution.Solution;
-import java.util.List;
 
 public class FourOneSolution extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> inputLines) {
-    return ScratchCard
-        .parseAll(inputLines)
+  protected Long run(Input input) {
+    return InputParser
+        .parseScratchCards(input)
         .stream()
         .map(scratchCard -> {
           long matchingWinningNumberCount = scratchCard

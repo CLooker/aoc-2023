@@ -52,7 +52,7 @@ import java.util.List;
 public class ${class_name} extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> inputLines) {
+  protected Long run(Input input) {
     return -1L;
   }
 

@@ -1,11 +1,10 @@
 package com.clooker.aoc2023.solution.two;
 
-import com.clooker.aoc2023.solution.Solution;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class TwoOneSolution extends Solution<Long> {
+public class TwoOneSolution extends TwoSolution {
 
   private static final Map<String, Integer> colorToCountMax = Map.of(
       "red", 12,
@@ -14,17 +13,15 @@ public class TwoOneSolution extends Solution<Long> {
   );
 
   @Override
-  protected Long run(List<String> inputLines) {
-    return Game
-        .parseAll(inputLines)
+  protected List<Long> summarizeGames(List<Game> games) {
+    return games
         .stream()
-        .filter(TwoOneSolution::isGamePossible)
+        .filter(this::isGamePossible)
         .map(Game::gameId)
-        .mapToLong(Long::longValue)
-        .sum();
+        .toList();
   }
 
-  private static boolean isGamePossible(Game game) {
+  private boolean isGamePossible(Game game) {
     return colorToCountMax
             .entrySet()
             .stream()
@@ -32,11 +29,12 @@ public class TwoOneSolution extends Solution<Long> {
               String color = entry.getKey();
               Integer countMax = entry.getValue();
               return game
-                  .countToColorList()
+                  .colorToCountList()
                   .stream()
                   .map(c2c -> c2c.get(color))
                   .filter(Objects::nonNull)
                   .allMatch(count -> count <= countMax);
             });
   }
+
 }

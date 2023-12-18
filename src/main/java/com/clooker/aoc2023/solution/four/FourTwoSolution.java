@@ -2,7 +2,6 @@ package com.clooker.aoc2023.solution.four;
 
 import com.clooker.aoc2023.solution.Solution;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
@@ -12,9 +11,9 @@ import java.util.stream.IntStream;
 public class FourTwoSolution extends Solution<Long> {
 
   @Override
-  protected Long run(List<String> inputLines) {
-    Map<Integer, Integer> scratchCardIdToMatchingCount = ScratchCard
-        .parseAll(inputLines)
+  protected Long run(Input input) {
+    Map<Integer, Integer> scratchCardIdToMatchingCount = InputParser
+        .parseScratchCards(input)
         .stream()
         .map(scratchCard -> {
           int matchingCount = (int) scratchCard
